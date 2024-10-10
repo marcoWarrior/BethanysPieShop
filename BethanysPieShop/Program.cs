@@ -21,7 +21,14 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage(); // Middleware component: Enable developer exception page
 }
 
+//"{controller=Home}/{action=Index}/{id?}" is the default route template
 app.MapDefaultControllerRoute(); // Middleware component: Enable default controller route, richieste in arrivo
+
+//Se avessimo voluto personalizzare la rotta o il pattern
+//app.MapControllerRoute(
+//    name: "defaulte",
+//    pattern: "{controller=Home}/{action=Index}/{id?}"); 
+
 DbInitializer.Seed(app); // Seed the database
 
 app.Run();
