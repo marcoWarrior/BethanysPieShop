@@ -6,6 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPieRepository, PieRepository>();
 
+builder.Services.AddScoped<IShoppingCart, ShoppingCart>(sp => ShoppingCart.GetCart(sp)); // Add shopping cart services
+builder.Services.AddSession(); // Add session services
+builder.Services.AddHttpContextAccessor(); // Add HTTP context accessor services
+
 builder.Services.AddControllersWithViews(); // Add MVC services
 builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
 {
@@ -15,6 +19,7 @@ builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
 var app = builder.Build();
 
 app.UseStaticFiles(); // Middleware component: Enable static files
+app.UseSession(); // Middleware component: Enable session
 
 if (app.Environment.IsDevelopment())
 {
