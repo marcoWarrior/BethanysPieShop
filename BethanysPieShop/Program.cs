@@ -1,5 +1,7 @@
+using BethanysPieShop.App;
 using BethanysPieShop.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,15 @@ builder.Services.AddScoped<IShoppingCart, ShoppingCart>(sp => ShoppingCart.GetCa
 builder.Services.AddSession(); // Add session services
 builder.Services.AddHttpContextAccessor(); // Add HTTP context accessor services
 
-builder.Services.AddControllersWithViews(); // Add MVC services
+builder.Services.AddControllersWithViews() // Add MVC services
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
+
+
 builder.Services.AddRazorPages(); // Add Razor pages services
+builder.Services.AddRazorComponents().AddInteractiveServerComponents(); // Add Razor components services
 builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:BethanysPieShopDbContextConnection"]);
@@ -36,7 +45,12 @@ app.MapDefaultControllerRoute(); // Middleware component: Enable default control
 //    name: "defaulte",
 //    pattern: "{controller=Home}/{action=Index}/{id?}"); 
 
+app.UseAntiforgery(); // Middleware component: Enable antiforgery endopoint per proteggere le richieste POST
+
 app.MapRazorPages(); // Middleware component: Enable Razor pages
+
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode(); // Middleware component: Enable Razor components
+
 DbInitializer.Seed(app); // Seed the database
 
 app.Run();
