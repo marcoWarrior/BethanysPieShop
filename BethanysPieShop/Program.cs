@@ -1,56 +1,91 @@
 using BethanysPieShop.App;
 using BethanysPieShop.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IPieRepository, PieRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+// Recupero della stringa di connessione al database dal file di configurazione (appsettings.json)
+var connectionString = builder.Configuration.GetConnectionString("BethanysPieShopDbContextConnection")
+    ?? throw new InvalidOperationException("Connection string 'BethanysPieShopDbContextConnection' not found.");
 
-builder.Services.AddScoped<IShoppingCart, ShoppingCart>(sp => ShoppingCart.GetCart(sp)); // Add shopping cart services
-builder.Services.AddSession(); // Add session services
-builder.Services.AddHttpContextAccessor(); // Add HTTP context accessor services
+// Configurazione del DbContext per l'uso di SQL Server
+builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
+    options.UseSqlServer(connectionString)); // Servizio per il database, componente MVC
 
-builder.Services.AddControllersWithViews() // Add MVC services
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    });
+// Aggiunta del servizio per l'autenticazione con Identity (per gestione utenti)
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddEntityFrameworkStores<BethanysPieShopDbContext>(); // Servizio di Identity, parte del sistema di autenticazione
+
+// Aggiunta dei controller e delle viste per l'applicazione MVC
+builder.Services.AddControllersWithViews(); // Servizio MVC
 
 
-builder.Services.AddRazorPages(); // Add Razor pages services
-builder.Services.AddRazorComponents().AddInteractiveServerComponents(); // Add Razor components services
+// builder.Services.AddScoped<ICategoryRepository, MockCategoryRepository>();
+// builder.Services.AddScoped<IPieRepository, MockPieRepository>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>(); // Servizio per la gestione delle categorie
+builder.Services.AddScoped<IPieRepository, PieRepository>(); // Servizio per la gestione delle torte
+builder.Services.AddScoped<IOrderRepository, OrderRepository>(); // Servizio per la gestione degli ordini
+
+// Aggiunta del servizio per il carrello della spesa
+builder.Services.AddScoped<IShoppingCart, ShoppingCart>(sp => ShoppingCart.GetCart(sp)); // Servizio per il carrello
+
+// Aggiunta della sessione per la gestione dello stato tra le richieste
+builder.Services.AddSession(); // Middleware di sessione
+
+// Aggiunta del supporto per l'accesso al contesto HTTP (utile per sessione, carrello, etc.)
+builder.Services.AddHttpContextAccessor(); // Servizio per ottenere informazioni sulla richiesta corrente
+
+// Aggiunta della possibilità di usare Razor Pages nell'applicazione
+builder.Services.AddRazorPages(); // Supporto per Razor Pages
+
+// builder.Services.AddServerSideBlazor(); // Per abilitare Blazor Server (commentato nel codice originale)
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents(); // Servizio per l'interazione lato server con Razor Components
+
+// Configurazione di nuovo il DbContext per l'uso di SQL Server (questa riga � ridondante rispetto alla prima configurazione)
 builder.Services.AddDbContext<BethanysPieShopDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration["ConnectionStrings:BethanysPieShopDbContextConnection"]);
+    options.UseSqlServer(
+        builder.Configuration["ConnectionStrings:BethanysPieShopDbContextConnection"]); // Nuova configurazione del DbContext
 });
+
+
+// builder.Services.AddDefaultIdentity<IdentityUser>()
+// .AddEntityFrameworkStores<BethanysPieShopDbContext>(); // Commentato poich� � gi� stato gestito prima
 
 var app = builder.Build();
 
-app.UseStaticFiles(); // Middleware component: Enable static files
-app.UseSession(); // Middleware component: Enable session
-
+// Verifica se l'applicazione � in modalit� di sviluppo
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // Middleware component: Enable developer exception page
+    app.UseDeveloperExceptionPage(); // Middleware di gestione degli errori in modalit� di sviluppo
 }
 
-//"{controller=Home}/{action=Index}/{id?}" is the default route template
-app.MapDefaultControllerRoute(); // Middleware component: Enable default controller route, richieste in arrivo
+app.UseStaticFiles(); // Middleware per i file statici
+app.UseSession(); // Middleware di sessione
+app.UseAuthentication(); // Middleware di autenticazione
+app.UseAuthorization(); // Middleware di autorizzazione
 
-//Se avessimo voluto personalizzare la rotta o il pattern
-//app.MapControllerRoute(
-//    name: "defaulte",
-//    pattern: "{controller=Home}/{action=Index}/{id?}"); 
+// Configurazione della route predefinita per il controller e l'azione
+// La struttura prevede che la rotta sia: /{controller=Home}/{action=Index}/{id?}
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"); // Routing MVC
 
-app.UseAntiforgery(); // Middleware component: Enable antiforgery endopoint per proteggere le richieste POST
+// Abilitazione della protezione contro i CSRF (Cross-Site Request Forgery)
+app.UseAntiforgery(); // Middleware di protezione CSRF
 
-app.MapRazorPages(); // Middleware component: Enable Razor pages
+// Aggiungi le pagine Razor all'applicazione
+app.MapRazorPages(); // Routing per Razor Pages
 
-app.MapRazorComponents<App>().AddInteractiveServerRenderMode(); // Middleware component: Enable Razor components
+// Aggiungi i componenti Razor all'applicazione (per la gestione dei Razor Components)
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode(); // Aggiunta di Razor Components all'applicazione
 
-DbInitializer.Seed(app); // Seed the database
+// Seeding del database (inizializzazione dei dati di esempio)
+DbInitializer.Seed(app); // Funzione che inizializza i dati nel database, utile durante lo sviluppo
 
-app.Run();
+// Avvio dell'applicazione
+app.Run(); // Avvio dell'applicazione
