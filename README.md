@@ -1,6 +1,44 @@
-# Complete Guide to Web Application Development with ASP.NET Core
+# Bethany's Pie Shop 🥧
 
-This guide will cover the essential skills needed to build a full web application using ASP.NET Core:
+A complete ASP.NET Core 8.0 web application for an online pie shop, featuring shopping cart, order management, and user authentication.
+
+## 🚀 Quick Start
+
+Want to run this project on your machine? Check out our comprehensive getting started guides:
+
+- **[Getting Started Guide (English)](GETTING_STARTED.md)** - Complete setup and run instructions
+- **[Guida Introduttiva (Italiano)](GETTING_STARTED_IT.md)** - Istruzioni complete per configurazione ed esecuzione
+
+## 📋 Prerequisites
+
+- .NET 8.0 SDK or higher
+- SQL Server LocalDB (Windows) or SQLite (cross-platform)
+- Git
+
+## ⚡ Quick Run
+
+```bash
+# Clone the repository
+git clone https://github.com/marcoWarrior/BethanysPieShop.git
+cd BethanysPieShop
+
+# Restore packages
+dotnet restore
+
+# Run the application
+cd BethanysPieShop
+dotnet run
+```
+
+Then open your browser to `https://localhost:5001`
+
+For detailed instructions, see the [Getting Started Guide](GETTING_STARTED.md).
+
+## 🎓 Learning Resources
+
+### Complete Guide to Web Application Development with ASP.NET Core
+
+This project covers essential skills needed to build a full web application using ASP.NET Core:
 
 - Learn how to build a full web application using ASP.NET Core.
 - Understand Razor, navigation, model binding, tag helpers, view components, and forms.
@@ -8,11 +46,9 @@ This guide will cover the essential skills needed to build a full web applicatio
 - Build an API using ASP.NET Core and use it from JavaScript.
 - Secure the application using ASP.NET Core.
 
-The guide is available in PDF format only in Italian and was created following a course from PluralSight.com.
+The comprehensive guide is available in PDF format (in Italian) and was created following a course from PluralSight.com.
 
----
-
-# Guida Completa allo Sviluppo di Applicazioni Web con ASP.NET Core
+### Guida Completa allo Sviluppo di Applicazioni Web con ASP.NET Core
 
 Questa guida coprirà le competenze essenziali necessarie per costruire un'applicazione web completa utilizzando ASP.NET Core:
 
@@ -23,6 +59,24 @@ Questa guida coprirà le competenze essenziali necessarie per costruire un'appli
 - Metti in sicurezza l'applicazione utilizzando ASP.NET Core.
 
 Guida presente in pdf, creata seguendo un corso su PluralSight.com
+
+## ✨ Features
+
+- 🛒 Shopping cart functionality
+- 👤 User authentication and authorization
+- 📦 Order management
+- 🎨 Responsive design with Bootstrap
+- 🔄 Interactive components with Blazor
+- 📱 Multiple UI approaches (MVC, Razor Pages, Blazor)
+
+## 🛠️ Technologies
+
+- ASP.NET Core 8.0
+- Entity Framework Core
+- ASP.NET Core Identity
+- Razor Pages
+- Blazor Components
+- Bootstrap CSS
 
 ## Project Rights
 
