@@ -2,6 +2,8 @@
 
 A complete ASP.NET Core 8.0 web application for an online pie shop, featuring shopping cart, order management, and user authentication.
 
+> **📚 New to this project?** Check out the **[Documentation Index](DOCUMENTATION_INDEX.md)** for a complete guide to all available documentation.
+
 ## 🚀 Quick Start
 
 Want to run this project on your machine? Check out our comprehensive getting started guides:
