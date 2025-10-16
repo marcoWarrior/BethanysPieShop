@@ -60,14 +60,12 @@ Questa guida coprirà le competenze essenziali necessarie per costruire un'appli
 
 Guida presente in pdf, creata seguendo un corso su PluralSight.com
 
-## ✨ Features
+## 📚 Documentation
 
-- 🛒 Shopping cart functionality
-- 👤 User authentication and authorization
-- 📦 Order management
-- 🎨 Responsive design with Bootstrap
-- 🔄 Interactive components with Blazor
-- 📱 Multiple UI approaches (MVC, Razor Pages, Blazor)
+- **[Getting Started Guide (English)](GETTING_STARTED.md)** - Complete setup and run instructions
+- **[Guida Introduttiva (Italiano)](GETTING_STARTED_IT.md)** - Istruzioni complete per configurazione ed esecuzione
+- **[Application Walkthrough](WALKTHROUGH.md)** - Visual tour of features and functionality
+- **[Architecture Overview](ARCHITECTURE.md)** - Technical architecture and design patterns
 
 ## 🛠️ Technologies
 
@@ -77,6 +75,15 @@ Guida presente in pdf, creata seguendo un corso su PluralSight.com
 - Razor Pages
 - Blazor Components
 - Bootstrap CSS
+
+## ✨ Features
+
+- 🛒 Shopping cart functionality
+- 👤 User authentication and authorization
+- 📦 Order management
+- 🎨 Responsive design with Bootstrap
+- 🔄 Interactive components with Blazor
+- 📱 Multiple UI approaches (MVC, Razor Pages, Blazor)
 
 ## Project Rights
 
